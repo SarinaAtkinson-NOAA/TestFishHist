@@ -79,7 +79,7 @@ mh_setup <- mh_raw |>
                                        MANAGEMENT_CATEGORY == "TEMPORAL CONTROLS" & lubridate::month(INEFFECTIVE_DATE) == 12 & lubridate::day(INEFFECTIVE_DATE) == 31 ~ 0,
                                        MANAGEMENT_TYPE == "REOPENING" & !is.na(INEFFECTIVE_DATE) ~ 1,
                                        TRUE ~ 0),
-                MANAGEMENT_TYPE_USE = dplyr::case_when(stringr::str_detect(MANAGEMENT_TYPE, "ADJUSTMENT") ~ str_replace(MANAGEMENT_TYPE, " ADJUSTMENT", ""),
+                MANAGEMENT_TYPE_USE = dplyr::case_when(stringr::str_detect(MANAGEMENT_TYPE, "ADJUSTMENT") ~ stringr::str_replace(MANAGEMENT_TYPE, " ADJUSTMENT", ""),
                                                 TRUE ~ MANAGEMENT_TYPE),
                 # Rename records with the MANAGEMENT_TYPE of REOPENING to the MANAGEMENT_TYPE of CLOSURE and add OPEN or CLOSED to the VALUE field
                 # Although the MANAGEMENT_TYPE will be different from the raw data (since the raw data stays true to the FR Language)
@@ -179,10 +179,10 @@ mh_setup <- mh_raw |>
                 END_DAY_OF_WEEK_USE = dplyr::case_when(END_DAY_OF_WEEK_USE == 0 ~ 7,
                                                 TRUE ~ END_DAY_OF_WEEK_USE),
                 # Format start and end day of week use as ordered factors
-                START_DAY_OF_WEEK_USE = recode_factor(START_DAY_OF_WEEK_USE,
+                START_DAY_OF_WEEK_USE = dplyr::recode_factor(START_DAY_OF_WEEK_USE,
                                                       `1` = "MONDAY", `2` = "TUESDAY", `3` = "WEDNESDAY",
                                                       `4` = "THURSDAY", `5` = "FRIDAY", `6` = "SATURDAY", `7` = "SUNDAY"),
-                END_DAY_OF_WEEK_USE = recode_factor(END_DAY_OF_WEEK_USE,
+                END_DAY_OF_WEEK_USE = dplyr::recode_factor(END_DAY_OF_WEEK_USE,
                                                     `1` = "MONDAY", `2` = "TUESDAY", `3` = "WEDNESDAY",
                                                     `4` = "THURSDAY", `5` = "FRIDAY", `6` = "SATURDAY", `7` = "SUNDAY"))
 

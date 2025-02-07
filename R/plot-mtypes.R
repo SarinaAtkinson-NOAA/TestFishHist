@@ -31,12 +31,12 @@ plot_mtypes <- function(data=fishhist, FMP_filter=NULL){
   if(missing(FMP_filter)) {
     dat2 <- fishhist |>
       dplyr::group_by(FMP, SECTOR_USE, MANAGEMENT_CATEGORY) |>
-      dplyr::summarise(nrecs = n_distinct(REGULATION_ID)) |>
+      dplyr::summarise(nrecs = dplyr::n_distinct(REGULATION_ID)) |>
       dplyr::group_by(FMP, SECTOR_USE) |>
       dplyr::mutate(tot = sum(nrecs), perc = nrecs/tot, labels = paste0(round(perc * 100,1), "%"))
 
-    plot <- dat2 %>% group_by(FMP) %>%
-      do(plot=ggplot2::ggplot(.,
+    plot <- dat2 |> dplyr::group_by(FMP) |>
+      dplyr::do(plot=ggplot2::ggplot(.,
                             ggplot2::aes(x = "" , y = perc, fill = MANAGEMENT_CATEGORY)) +
       ggplot2::geom_col(width = 1, color = 1) +
       ggplot2::coord_polar(theta = "y") +
@@ -53,7 +53,7 @@ plot_mtypes <- function(data=fishhist, FMP_filter=NULL){
     dat2 <- fishhist |>
       dplyr::filter(FMP == FMP_filter) |>
       dplyr::group_by(FMP, SECTOR_USE, MANAGEMENT_CATEGORY) |>
-      dplyr::summarise(nrecs = n_distinct(REGULATION_ID)) |>
+      dplyr::summarise(nrecs = dplyr::n_distinct(REGULATION_ID)) |>
       dplyr::group_by(FMP, SECTOR_USE) |>
       dplyr::mutate(tot = sum(nrecs), perc = nrecs/tot, labels = paste0(round(perc * 100,1), "%"))
 
